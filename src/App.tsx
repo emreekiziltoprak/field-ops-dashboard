@@ -1,12 +1,15 @@
-import './App.css'
+import "./App.css";
+import "react-mosaic-component/react-mosaic-component.css";
+import AppLayout from "./layouts/AppLayout";
+import { Provider } from "react-redux";
+import store from "./store";
 
 function App() {
-
   return (
-    <>
-    <p>Initial</p>
-    </>
-  )
+    <Provider store={store}>
+      <AppLayout />
+    </Provider>
+  );
 }
 
-export default App
+export default App;
