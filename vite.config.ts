@@ -1,7 +1,10 @@
 import { defineConfig } from 'vite'
+import cesium from 'vite-plugin-cesium'
 import react from '@vitejs/plugin-react-swc'
 
-// https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), cesium()],
+  define: {
+    CESIUM_BASE_URL: JSON.stringify('/cesium'),
+  },
 })

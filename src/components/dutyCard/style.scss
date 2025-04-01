@@ -1,0 +1,38 @@
+.duty-card {
+    background-color: #1e242c;
+    border: 1px solid #394b59;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 12px;
+    color: #f5f8fa;
+  
+    &__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+  
+    &__title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #f5f8fa;
+      margin: 0;
+    }
+  
+    &__icon {
+      color: #5c7080;
+    }
+  
+    &__info {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+  
+      strong {
+        color: #f0f8ff;
+      }
+    }
+  }
+  

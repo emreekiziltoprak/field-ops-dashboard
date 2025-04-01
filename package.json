@@ -20,6 +20,7 @@
     "formik": "^2.4.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-mosaic-component": "^6.1.1",
     "react-redux": "^9.2.0",
     "sass": "^1.86.0",
     "vite-plugin-cesium": "^1.2.23",

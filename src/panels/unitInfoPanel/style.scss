@@ -1,0 +1,19 @@
+.unit-info-panel {
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
+  padding: 12px;
+  background: #202830;
+
+  .mission-info-card {
+    margin-bottom: 20px;
+    background: #1f232a;
+    border: 1px solid #394b59;
+  }
+
+  .selected-units-section {
+    h4 {
+      margin-bottom: 12px;
+    }
+  }
+} 

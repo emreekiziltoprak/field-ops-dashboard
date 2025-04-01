@@ -1,0 +1,44 @@
+.unit-card {
+    background-color: #1f232a;
+    border: 1px solid #394b59;
+    border-radius: 6px;
+    color: #f5f8fa;
+    margin-bottom: 12px;
+  
+    &__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  
+    &__title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin: 0;
+    }
+  
+    &__icon {
+      color: #5c7080;
+    }
+  
+    &__close {
+      color: #bfccd6;
+  
+      &:hover {
+        color: #f55656;
+      }
+    }
+  
+    &__content {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+  
+      strong {
+        color: #f0f8ff;
+      }
+    }
+  }
+  
