@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { Coordinate } from '../features/mission/hooks/useZoomMission'
 
 export type Mission = {
   id: string
@@ -6,7 +7,7 @@ export type Mission = {
   type: string
   startTime: string
   endTime: string
-  coordinates: { lat: number; lng: number }[]
+  coordinates: Coordinate[]
 }
 
 type MissionState = {

@@ -1,6 +1,7 @@
 import { Card, H4, Text } from '@blueprintjs/core'
 import { useDispatch } from 'react-redux'
 import { selectMission } from '../../store/missionSlice'
+import { useZoomToMission } from '../../features/mission/hooks/useZoomMission'
 
 type Props = {
   mission: {
@@ -15,9 +16,15 @@ type Props = {
 
 const DutyCard = ({ mission }: Props) => {
   const dispatch = useDispatch()
+  const zoomToMission = useZoomToMission() 
+
+  const handleClick = () => {
+    dispatch(selectMission(mission.id))
+    zoomToMission(mission.coordinates) 
+  }
 
   return (
-    <Card interactive onClick={() => dispatch(selectMission(mission.id))}>
+    <Card interactive onClick={handleClick}>
       <H4>{mission.name}</H4>
       <Text>Tip: {mission.type}</Text>
       <Text>Başlangıç: {new Date(mission.startTime).toLocaleString()}</Text>

@@ -20,6 +20,7 @@ import {
 import { usePolygonDraw } from '../../features/draw/hooks/usePolygonDraw'
 import MissionFormModal from '../../features/mission/components/MissionFormModal'
 import { useViewer } from '../../features/map/context/ViewerContext'
+import { attachLeftClickHandler } from '../../features/draw/handleLeftClick'
 
 Ion.defaultAccessToken = import.meta.env.VITE_CESIUM_TOKEN as string
 
@@ -119,25 +120,7 @@ const MapPanel = () => {
       })
     })
   }, [viewer, missions])
-
-  // Tıklanıldığında seç ve zoom
-  useEffect(() => {
-    if (!viewer) return
-
-    const handler = new ScreenSpaceEventHandler(viewer.canvas)
-
-    handler.setInputAction((event: { position: Cartesian2 }) => {
-      const picked = viewer.scene.pick(event.position)
-      if (picked && picked.id) {
-        const entity = picked.id
-        dispatch(selectMission(entity.id))
-        viewer.zoomTo(entity)
-      }
-    }, ScreenSpaceEventType.LEFT_CLICK)
-
-    return () => handler.destroy()
-  }, [viewer, dispatch])
-
+  
   return (
     <>
       <div ref={viewerDivRef} style={{ width: '100%', height: '100%' }} />
