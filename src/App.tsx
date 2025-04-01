@@ -1,15 +1,21 @@
-import "./App.css";
-import "react-mosaic-component/react-mosaic-component.css";
-import AppLayout from "./layouts/AppLayout";
-import { Provider } from "react-redux";
-import store from "./store";
+import { Provider } from 'react-redux'
+import AppLayout from './layouts/AppLayout'
+import Header from './components/header/Header'
+import store from './store'
 
-function App() {
+const App = () => {
+
+
   return (
     <Provider store={store}>
-      <AppLayout />
+      <div className="bp5-dark" style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
+        <Header />
+        <div style={{ flex: 1 }}>
+          <AppLayout />
+        </div>
+      </div>
     </Provider>
-  );
+  )
 }
 
-export default App;
+export default App

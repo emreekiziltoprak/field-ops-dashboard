@@ -1,26 +1,35 @@
-type Props = {
-    unit: {
-      id: string
-      name: string
-      speed: number
-      course: number
-      type: string
-    }
-    onClose: () => void
-  }
-  
-  const UnitCard = ({ unit, onClose }: Props) => {
-    return (
-      <div style={{ background: '#2b2f3a', borderRadius: 8, padding: 12, marginBottom: 10, color: 'white' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <h4>{unit.name}</h4>
-          <button onClick={onClose} style={{ color: 'white' }}>✖</button>
-        </div>
-        <p>Type: {unit.type}</p>
-        <p>Speed: {unit.speed} km/s</p>
-        <p>Direction: {unit.course}°</p>
-      </div>
-    )
-  }
+import { Card, Button, H4, Icon, Text } from '@blueprintjs/core'
+import './style.scss'
 
-export default UnitCard;
+type Props = {
+  unit: {
+    id: string
+    name: string
+    speed: number
+    course: number
+    type: string
+  }
+  onClose: () => void
+}
+
+const UnitCard = ({ unit, onClose }: Props) => {
+  return (
+    <Card className="unit-card bp5-dark" elevation={2}>
+      <div className="unit-card__header">
+        <H4 className="unit-card__title">
+          <Icon icon="airplane" className="unit-card__icon" />
+          {unit.name}
+        </H4>
+        <Button minimal icon="cross" onClick={onClose} className="unit-card__close" />
+      </div>
+
+      <div className="unit-card__content">
+        <Text>🛡️ Type: <strong>{unit.type}</strong></Text>
+        <Text>🚀 Speed: <strong>{unit.speed} km/s</strong></Text>
+        <Text>🧭 Direction: <strong>{unit.course}°</strong></Text>
+      </div>
+    </Card>
+  )
+}
+
+export default UnitCard

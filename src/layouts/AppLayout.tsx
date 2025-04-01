@@ -57,7 +57,7 @@ const AppLayout = () => {
         second: "rightUnitPanel",
         splitPercentage: 70, 
       }}
-      className="h-screen"
+      className="h-screen mosaic-blueprint-theme bp5-dark"
       resize={{
         minimumPaneSizePercentage: 20, 
       }}
