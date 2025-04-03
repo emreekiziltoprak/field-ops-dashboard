@@ -1,70 +1,33 @@
-import {
-  Viewer,
-  Ion,
-  Cartesian3,
-  Cartographic,
-  Math as CesiumMath,
-  ScreenSpaceEventHandler,
-  ScreenSpaceEventType,
-  Color,
-  Cartesian2,
-} from 'cesium'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
+import {  Cartesian2, Cartographic, Math as CesiumMath, defined, Ion, ScreenSpaceEventHandler, ScreenSpaceEventType } from 'cesium'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../store'
-import {
-  setDrawingMode,
-  addMission,
-  selectMission,
-} from '../../store/missionSlice'
+import { setDrawingMode, addMission, selectMission, Mission } from '../../store/missionSlice'
 import { usePolygonDraw } from '../../features/draw/hooks/usePolygonDraw'
 import MissionFormModal from '../../features/mission/components/MissionFormModal'
 import { useViewer } from '../../features/map/context/ViewerContext'
-import { attachLeftClickHandler } from '../../features/draw/handleLeftClick'
+import { CesiumMissionRenderer } from '../../features/mission/renderer/CesiumMissionRenderer'
 
 Ion.defaultAccessToken = import.meta.env.VITE_CESIUM_TOKEN as string
 
 const MapPanel = () => {
   const dispatch = useDispatch()
   const viewerDivRef = useRef<HTMLDivElement>(null)
-  const { viewer, setViewer } = useViewer()
+  const { viewer, isInitialized, initializeViewer } = useViewer()
   const drawingMode = useSelector((state: RootState) => state.mission.drawingMode)
   const missions = useSelector((state: RootState) => state.mission.missions)
 
   const [showModal, setShowModal] = useState(false)
   const [lastPolygon, setLastPolygon] = useState<{ lat: number; lng: number }[]>([])
 
+  // Initialize viewer if not already initialized
   useEffect(() => {
-    if (viewerDivRef.current && !viewer) {
-      // Önceki viewer varsa destroy et
-      const prevViewer = (window ).__cesiumViewer as Viewer | undefined
-      if (prevViewer && !prevViewer.isDestroyed?.()) {
-        prevViewer.destroy()
-      }
-  
-      const cesiumViewer = new Viewer(viewerDivRef.current, {
-        animation: false,
-        timeline: false,
-        baseLayerPicker: false,
-        homeButton: false,
-        fullscreenButton: false,
-        infoBox: false,
-        sceneModePicker: false,
-      })
-  
-      cesiumViewer.camera.setView({
-        destination: Cartesian3.fromDegrees(32.85, 39.93, 15000),
-      })
-  
-      // referans için global değişkene de kaydet istersen
-      ;(window ).__cesiumViewer = cesiumViewer
-  
-      setViewer(cesiumViewer)
+    if (!isInitialized && viewerDivRef.current) {
+      initializeViewer(viewerDivRef.current)
     }
-  }, [viewer, setViewer])
-  
+  }, [isInitialized, initializeViewer])
 
-  // Polygon drawing logic
+  // Polygon drawing operations
   usePolygonDraw(viewer ?? null, drawingMode, (positions) => {
     const latLngs = positions.map((pos) => {
       const carto = Cartographic.fromCartesian(pos)
@@ -79,14 +42,14 @@ const MapPanel = () => {
     dispatch(setDrawingMode(false))
   })
 
-  // Modal submit
-  const handleSaveMission = (data: {
+  // Save mission through modal
+  const handleSaveMission = useCallback((data: {
     name: string
     type: string
     startTime: string
     endTime: string
   }) => {
-    const newMission = {
+    const newMission: Mission = {
       id: crypto.randomUUID(),
       ...data,
       coordinates: lastPolygon,
@@ -94,33 +57,34 @@ const MapPanel = () => {
 
     dispatch(addMission(newMission))
     dispatch(selectMission(newMission.id))
-  }
+  }, [dispatch, lastPolygon])
 
-  // Görevleri haritada göster
+  // Service that renders missions (Dependency Inversion)
   useEffect(() => {
     if (!viewer) return
 
-    viewer.entities.removeAll()
-
-    missions.forEach((mission) => {
-      const positions = mission.coordinates.map((coord) =>
-        Cartesian3.fromDegrees(coord.lng, coord.lat)
-      )
-
-      viewer.entities.add({
-        id: mission.id,
-        name: mission.name,
-        polygon: {
-          hierarchy: positions,
-          material: Color.BLUE.withAlpha(0.3),
-          outline: true,
-          outlineColor: Color.NAVY,
-        },
-        description: `Görev: ${mission.name}`,
-      })
-    })
+    const missionRenderer = new CesiumMissionRenderer()
+    missionRenderer.render(viewer, missions)
   }, [viewer, missions])
-  
+
+  // Add event handler to listen for polygon clicks on the map
+  useEffect(() => {
+    if (!viewer) return
+
+    const handler = new ScreenSpaceEventHandler(viewer.canvas)
+    handler.setInputAction((movement: { position: Cartesian2 }) => {
+      const pickedObject = viewer.scene.pick(movement.position)
+      if (defined(pickedObject) && pickedObject.id) { // Using id instead of _id
+        dispatch(selectMission(pickedObject.id._id as string))
+      }
+    }, ScreenSpaceEventType.LEFT_CLICK)
+
+    return () => {
+      handler.destroy()
+    }
+  }, [viewer, dispatch])
+
+
   return (
     <>
       <div ref={viewerDivRef} style={{ width: '100%', height: '100%' }} />
