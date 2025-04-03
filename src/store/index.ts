@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import unitReducer from './unitSlice'
 import missionReducer from './missionSlice'
+import simulationReducer from './simulationSlice'
 
 const store = configureStore({
   reducer: {
     unit: unitReducer,
     mission: missionReducer,
+    simulation: simulationReducer,
   },
 })
 
