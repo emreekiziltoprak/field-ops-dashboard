@@ -3,6 +3,7 @@ import "react-mosaic-component/react-mosaic-component.css";
 import MapPanel from "../panels/mapPanel/MapPanel";
 import UnitInfoPanel from "../panels/unitInfoPanel/UnitInfoPanel";
 import { JSX } from "react";
+import "./appLayout.scss";
 
 type PanelKey = "mapPanel" | "rightUnitPanel";
 
@@ -57,7 +58,7 @@ const AppLayout = () => {
         second: "rightUnitPanel",
         splitPercentage: 70, 
       }}
-      className="h-screen mosaic-blueprint-theme bp5-dark"
+      className="app-layout mosaic-blueprint-theme bp5-dark"
       resize={{
         minimumPaneSizePercentage: 20, 
       }}

@@ -10,7 +10,7 @@ const Header = () => {
   }
 
   return (
-    <Navbar fixedToTop>
+    <Navbar >
       <Navbar.Group align={Alignment.LEFT}>
         <Navbar.Heading>Field Ops Dashboard</Navbar.Heading>
       </Navbar.Group>
