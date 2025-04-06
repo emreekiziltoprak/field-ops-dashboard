@@ -4,10 +4,12 @@ import { Unit } from '../types/Unit';
 
 interface SimulationState {
   units: Unit[];
+  refreshInterval: number;
 }
 
 const initialState: SimulationState = {
-  units: [] 
+  units: [],
+  refreshInterval: 3000 // Default refresh interval in milliseconds
 };
 
 const simulationSlice = createSlice({
@@ -16,9 +18,12 @@ const simulationSlice = createSlice({
   reducers: {
     setUnits(state, action: PayloadAction<Unit[]>) {
       state.units = action.payload;
+    },
+    setRefreshInterval(state, action: PayloadAction<number>) {
+      state.refreshInterval = action.payload;
     }
   }
 });
 
-export const { setUnits } = simulationSlice.actions;
+export const { setUnits, setRefreshInterval } = simulationSlice.actions;
 export default simulationSlice.reducer;

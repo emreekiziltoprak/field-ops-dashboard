@@ -27,7 +27,7 @@ export function usePolygonDraw(
   useEffect(() => {
     if (!viewer || !enabled) return
 
-    // Temizle
+    // Clear
     positions.current = []
 
     if (polygonEntity.current) {
@@ -47,7 +47,7 @@ export function usePolygonDraw(
 
     handler.current = new ScreenSpaceEventHandler(viewer.canvas)
 
-    // Mouse hareketi
+    // Mouse movement
     handler.current.setInputAction(({ endPosition }: { endPosition: Cartesian2 }) => {
       const moving = viewer.scene.pickPosition(endPosition)
       if (!moving) return
@@ -55,7 +55,7 @@ export function usePolygonDraw(
       const dynamicLine = [...positions.current, moving]
       const positionCallback = new CallbackProperty(() => moving, false)
 
-      // Geçici çizgi
+      // Temporary line
       if (positions.current.length > 0) {
         const lineCallback = new CallbackProperty(() => dynamicLine, false)
 
@@ -75,7 +75,7 @@ export function usePolygonDraw(
         }
       }
 
-      // İmleç noktası
+      // Cursor point
       if (!cursorEntity.current) {
         cursorEntity.current = viewer.entities.add({
           position: positionCallback,
@@ -91,7 +91,7 @@ export function usePolygonDraw(
       }
     }, ScreenSpaceEventType.MOUSE_MOVE)
 
-    // Sol tık - Nokta ekle
+    // Left click - Add point
     handler.current.setInputAction(({ position }: { position: Cartesian2 }) => {
       const picked = viewer.scene.pickPosition(position)
       if (!picked) return
@@ -113,7 +113,7 @@ export function usePolygonDraw(
       }
     }, ScreenSpaceEventType.LEFT_CLICK)
 
-    // Sağ tık - Çizimi tamamla
+    // Right click - Complete drawing
     handler.current.setInputAction(() => {
       if (positions.current.length >= 3) {
         onComplete([...positions.current])

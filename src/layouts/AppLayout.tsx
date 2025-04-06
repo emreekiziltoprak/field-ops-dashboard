@@ -23,8 +23,6 @@ const ELEMENT_MAP: Record<PanelKey, JSX.Element> = {
     <div style={{ 
       height: '100%',
       width: '100%',
-      background: '#1c2128',
-      padding: 12,
       minWidth: '300px' 
     }}>
       <UnitInfoPanel />

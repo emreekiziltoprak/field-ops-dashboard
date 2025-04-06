@@ -40,9 +40,49 @@ VITE_CESIUM_TOKEN=your_access_token
 
 ## Testing
 
+The Field Ops Dashboard has a comprehensive test suite using Jest and React Testing Library. The main focus areas for testing include:
+
+### Core Tests
+
+- **PositionCalculator**: Tests the mathematical calculations that power the unit movement simulation
+- **Redux State Management**: Tests for mission and unit state reducers and actions
+- **Component Tests**: Tests for key UI components like the UnitGraphCard
+- **Hook Tests**: Tests for custom hooks like usePolygonDraw
+
+### Running Tests
+
 ```bash
+# Run all tests
 yarn test
+
+# Run tests in watch mode during development
+yarn test:watch
+
+# Generate test coverage report
+yarn test:coverage
 ```
+
+### Test Coverage Goals
+
+The project aims for 70% code coverage across:
+- Branches
+- Functions
+- Lines
+- Statements
+
+### Testing Approaches
+
+1. **Unit Tests**: Testing individual functions, hooks and small components in isolation
+2. **Integration Tests**: Testing how components work together with Redux
+3. **Snapshot Testing**: Ensuring UI components maintain their expected output
+4. **Mock Testing**: Using mock functions for external dependencies (e.g., Cesium)
+
+### Adding New Tests
+
+When adding new features, we follow a test-driven development approach:
+1. Write tests that define the expected behavior
+2. Implement the feature to satisfy the tests
+3. Refactor while ensuring tests continue to pass
 
 ## Project Structure
 
@@ -51,14 +91,23 @@ src/
 ├── assets/         # Static files like images, fonts, etc.
 ├── components/     # Reusable UI components
 ├── features/       # Feature-specific components and logic
-├── hooks/          # Custom React hooks
+│   ├── map/        # Map visualization and interaction
+│   ├── mission/    # Mission management features
+│   ├── unit/       # Unit tracking and information
+│   └── draw/       # Drawing tools for map
+├── layouts/        # Layout components
+│   └── bottomBar/  # Bottom bar UI component
+├── lib/            # Utility libraries and helpers
+├── mock/           # Mock data for development and testing
+├── panels/         # Panel components for the dashboard
 ├── service/        # API and service layer
-├── store/          # State management (Redux/Context)
+├── store/          # State management (Redux)
 ├── types/          # TypeScript type definitions
-├── __tests__/      # Test files
+├── __tests__/      # Jest test files
+├── test/           # Test utilities and helpers
 ├── App.tsx         # Main App component
+├── App.scss        # App styles including theme configuration
 ├── main.tsx        # Application entry point
-├── App.css         # App-specific styles
 ├── index.css       # Global styles
 └── vite-env.d.ts   # Vite type declarations
 ```

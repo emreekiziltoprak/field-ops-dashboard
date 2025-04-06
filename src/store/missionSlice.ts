@@ -1,5 +1,7 @@
+import { Mission } from './../features/mission/renderer/IMissionRenderer';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Coordinate } from '../features/mission/hooks/useZoomMission'
+import { act } from 'react';
 
 export type Mission = {
   id: string
@@ -13,13 +15,15 @@ export type Mission = {
 type MissionState = {
   missions: Mission[]
   drawingMode: boolean
-  selectedMissionId: string | null
+  selectedMissionId: string | null,
+  selectedMission: Mission | null
 }
 
 const initialState: MissionState = {
   missions: [],
   drawingMode: false,
   selectedMissionId: null,
+  selectedMission: null
 }
 
 const missionSlice = createSlice({
@@ -35,8 +39,11 @@ const missionSlice = createSlice({
     selectMission: (state, action: PayloadAction<string>) => {
       state.selectedMissionId = action.payload
     },
+    selectMissionObj : (state, action: PayloadAction<Mission>) => {
+      state.selectedMission = action.payload
+    }
   },
 })
 
-export const { setDrawingMode, addMission, selectMission } = missionSlice.actions
+export const { setDrawingMode, addMission, selectMission, selectMissionObj} = missionSlice.actions
 export default missionSlice.reducer

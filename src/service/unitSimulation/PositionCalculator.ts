@@ -17,7 +17,7 @@ export class PositionCalculator implements IPositionCalculator {
     const latRad = toRad(lat);
     const lngRad = toRad(lng);
     const bearingRad = toRad(course);
-    const R = 6371000; // Dünya yarıçapı (metre)
+    const R = 6371000; // Earth radius (meters)
     const newLatRad = Math.asin(
       Math.sin(latRad) * Math.cos(distance / R) +
       Math.cos(latRad) * Math.sin(distance / R) * Math.cos(bearingRad)
