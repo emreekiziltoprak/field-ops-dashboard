@@ -22,8 +22,7 @@ type Unit = {
     initialState,
     reducers: {
       addUnitToPanel: (state, action) => {
-        const exists = state.selectedUnits.find(u => u.id === action.payload.id)
-        if (!exists) state.selectedUnits.push(action.payload)
+        state.selectedUnits = [action.payload];
       },
       removeUnitFromPanel: (state, action) => {
         state.selectedUnits = state.selectedUnits.filter(u => u.id !== action.payload)

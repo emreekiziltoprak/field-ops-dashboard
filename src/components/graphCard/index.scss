@@ -1,0 +1,44 @@
+.graph-card {
+    background-color: #252a31;
+    border-radius: 3px;
+    margin-bottom: 16px;
+    padding: 10px;
+    width: 100%;
+    
+    .bp4-card {
+      padding: 0;
+    }
+    
+    .echarts-for-react {
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    
+    &.compact {
+      padding: 8px;
+      
+      .echarts-for-react {
+        height: 200px !important;
+      }
+    }
+    
+    &.dark-theme {
+      background-color: #1c2127;
+    }
+    
+    &.with-border {
+      border: 1px solid rgba(72, 175, 240, 0.3);
+    }
+  }
+  
+  /* Add some global styles for eCharts tooltips to match the application theme */
+  .echarts-tooltip-dark {
+    background-color: rgba(38, 45, 51, 0.9) !important;
+    border: 1px solid #5c7080 !important;
+    border-radius: 3px !important;
+    padding: 8px !important;
+    color: #e0e0e0 !important;
+    line-height: 1.5 !important;
+    font-family: -apple-system, "BlinkMacSystemFont", "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Open Sans", "Helvetica Neue", sans-serif !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3) !important;
+  }

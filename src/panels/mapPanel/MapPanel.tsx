@@ -7,8 +7,6 @@ import {
   Cartesian2,
   Cartographic,
   Math as CesiumMath,
-  Color,
-  Cartesian3,
 } from "cesium";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
@@ -17,6 +15,7 @@ import {
   addMission,
   selectMission,
   Mission,
+  selectMissionObj,
 } from "../../store/missionSlice";
 import { usePolygonDraw } from "../../features/draw/hooks/usePolygonDraw";
 import MissionFormModal from "../../features/mission/components/MissionFormModal";
@@ -39,6 +38,7 @@ const MapPanel = () => {
     (state: RootState) => state.mission.drawingMode
   );
   const missions = useSelector((state: RootState) => state.mission.missions);
+  const interval = useSelector((state: RootState) => state.simulation.refreshInterval);
   const [unitSimulationService, setUnitSimulationService] = useState<UnitSimulationService | null>(null);
   const units = useSelector((state: RootState) => state.simulation.units);
   const [showModal, setShowModal] = useState(false);
@@ -46,13 +46,13 @@ const MapPanel = () => {
     { lat: number; lng: number }[]
   >([]);
 
-  // MapPanel.tsx'e ekleyin
+  
 useEffect(() => {
   if (drawingMode && unitSimulationService) {
-    // Çizim modu aktifse simülasyonu duraklat
+    // Pause simulation if drawing mode is active
     unitSimulationService.pause();
   } else if (!drawingMode && unitSimulationService) {
-    // Çizim modu bitince simülasyonu devam ettir
+    // Resume simulation when drawing mode ends
     unitSimulationService.resume();
   }
 }, [drawingMode, unitSimulationService]);
@@ -75,7 +75,7 @@ useEffect(() => {
       // Create simulation service with proper trail length setting
       const simulationService = new UnitSimulationService(
         initialUnits,
-        100, // Update interval in milliseconds
+        interval, // Update interval in milliseconds
         positionCalculator,
         viewer,
         1000 // Trail length - number of positions to display in polyline
@@ -129,6 +129,7 @@ useEffect(() => {
       };
       dispatch(addMission(newMission));
       dispatch(selectMission(newMission.id));
+      dispatch(selectMissionObj(newMission))
     },
     [dispatch, lastPolygon]
   );

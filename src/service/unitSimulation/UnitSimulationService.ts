@@ -73,7 +73,6 @@ export class UnitSimulationService {
    * Get color based on unit type or other properties
    */
   private getUnitColor(unit: Unit): Color {
-    // You can customize this based on unit types or other properties
     switch(unit.type) {
       case 'friendly':
         return Color.BLUE;
@@ -170,18 +169,28 @@ export class UnitSimulationService {
     }
   }
 
-  /**
-   * Clean up all visualization elements
-   */
-  cleanup(): void {
-    this.stop();
-    if (this.polylines.size > 0) {
-      this.polylines.forEach((polyline) => 
-        this.viewer.entities.remove(polyline)
-      );
+/**
+ * Clean up all visualization elements
+ */
+cleanup(): void {
+  this.stop();
+  
+  // Check if polylines exist and viewer is valid before attempting to clean up
+  if (this.polylines && this.polylines.size > 0 && this.viewer && !this.viewer.isDestroyed()) {
+    try {
+      // Use Array.from to create a stable copy of the polyline entries
+      Array.from(this.polylines.entries()).forEach(([_, polyline]) => {
+        if (polyline && this.viewer.entities) {
+          this.viewer.entities.remove(polyline);
+        }
+      });
+      
       this.polylines.clear();
+    } catch (error) {
+      console.error("Error during cleanup of polylines:", error);
     }
   }
+}
 
   /**
    * Get all units
