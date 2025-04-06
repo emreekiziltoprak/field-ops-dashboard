@@ -18,6 +18,7 @@ export interface CesiumViewerOptions {
   fullscreenButton?: boolean
   infoBox?: boolean
   sceneModePicker?: boolean
+  depthTestAgainstTerrain?: boolean
 }
 
 // Default values; initialize and destroy functions are defined as no-op

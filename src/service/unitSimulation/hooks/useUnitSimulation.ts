@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Unit } from '../../../types/Unit';
-import { simulationService } from '../../../main';
+import { UnitSimulationService } from '../UnitSimulationService';
 
 
-export const useUnitSimulation = (): Unit[] => {
+export const useUnitSimulation = (simulationService: UnitSimulationService): Unit[] => {
+
   const [units, setUnits] = useState<Unit[]>(simulationService.getUnits());
 
   useEffect(() => {
